@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+// Components
+import Loader from "./Components/Loader/Loader";
+
 const Container = styled.div``
 
 
@@ -7,7 +10,9 @@ const Container = styled.div``
 const App = () => {
 
   return (
-    <Container>app</Container>
+    <Container>
+      <Loader />
+    </Container>
   )
 }
 
