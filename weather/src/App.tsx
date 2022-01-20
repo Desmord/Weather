@@ -34,11 +34,10 @@ const App = () => {
 
   const [darkMode, setDarkMode] = useState(true)
 
-
   return (
     <ThemeProvider theme={GlobalTheme}>
       <Container darkMode={darkMode}>
-        <Loader />
+        <Loader darkMode={darkMode} />
       </Container>
     </ThemeProvider>
   )
