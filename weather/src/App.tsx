@@ -4,13 +4,14 @@ import { GlobalTheme } from './GlobalTheme'
 
 // Components
 import Loader from "./Components/Loader/Loader";
+import ModeSwitch from "./Components/Loader/ModeSwitch/ModeSwitch";
 
 const Container = styled.div<{ darkMode: boolean }>`
   width: 100vw;
   height: 100vh;
   display:grid;
   grid-template-columns: 1fr 250px 250px 1fr;
-  grid-template-rows: 100px 400px;
+  grid-template-rows: 1fr 400px 1fr;
 
   ${({ theme, darkMode }) => darkMode ?
     `
@@ -38,6 +39,7 @@ const App = () => {
     <ThemeProvider theme={GlobalTheme}>
       <Container darkMode={darkMode}>
         <Loader darkMode={darkMode} />
+        <ModeSwitch darkMode={darkMode} setDarkMode={setDarkMode}/>
       </Container>
     </ThemeProvider>
   )
