@@ -1,14 +1,28 @@
 import styled, { keyframes } from "styled-components";
+import useShowHide from "../../CustomHooks/useShowHide";
 
-const Container = styled.div`
+
+const Container = styled.div<{ isDisplay: boolean, isShown: boolean }>`
   position:relative;
   grid-column:2/4;
-  grid-row:2/3;
-  display:flex;
-  justify-content: center;
-  align-items:center;
-`
+  grid-row:2/4;
+  transition:all 0.5s ease-in;
 
+  ${({ isShown }) => isShown ? `
+    opacity: 1;
+  ` : `
+    opacity: 0;
+  `}
+
+  ${({ isDisplay }) => isDisplay ? `
+    display:flex;
+    justify-content: center;
+    align-items:center;
+  ` : `
+    display:none;
+  `}
+
+`
 
 const Bounce = keyframes`
      0% {
@@ -69,10 +83,12 @@ const Text = styled.div<{ darkMode: boolean }>`
 
 
 
-const Loader = ({ darkMode }: { darkMode: boolean }) => {
+const Loader = ({ displayLoader, darkMode }: { displayLoader: boolean, darkMode: boolean }) => {
+
+  const { isDisplay, isShown, } = useShowHide(displayLoader)
 
   return (
-    <Container  >
+    <Container isDisplay={isDisplay} isShown={isShown}>
       <Bounceball darkMode={darkMode}></Bounceball>
       <Text darkMode={darkMode}>Wczytywanie...</Text>
     </Container >
