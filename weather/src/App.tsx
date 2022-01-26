@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { GlobalTheme } from './GlobalTheme'
+import {
+  getPosition,
+  getCurrentWeather,
+  getTomorrowWeather,
+} from './WeatherUtilities'
 
 // Components
 import Loader from "./Components/Loader/Loader";
@@ -31,15 +36,10 @@ const Container = styled.div<{ darkMode: boolean }>`
 
 `
 
-const Asfgasf = styled.div`
-  position: fixed;
-  top:100px;
-  left:100px;
-  width: 100px;
-  height: 100px;
-  background-color: #fff;
-
-`
+// adding weatyher utitlities
+// current weather
+// tommorow weather
+// initial loading current and tomorow weather
 
 const App = () => {
 
@@ -47,8 +47,72 @@ const App = () => {
 
   const [displayLoader, setDisplayLoader] = useState(true);
   const [displayInfo, setDisplayInfo] = useState(false);
-  const [infoText, setInfoText] = useState(`Bład podczas połączenia spróbuj ponownie.`)
+  const [infoText, setInfoText] = useState(`Bład podczas połączenia spróbuj ponownie.`);
+  const [currentWeather, setCurrentWeather] = useState({
+    city_name: ``, windSpeed: 0, temperature: 0,
+    airQualityIndex: 0, rain: 0, snow: 0, clouds: 0,
+  });
+  const [tomorrowWeather, setTomorrowWeather] = useState({
+    tomorrowWindSpeed: 0, tomorrowTemperature: 0, tomorrowRain: 0,
+    tomorrowSnow: 0, tomorrowClouds: 0,
+  });
 
+  useEffect(() => {
+
+    const getData = async () => {
+
+      try {
+        const { lon, lat, error }: { lon: number, lat: number, error: boolean } = await getPosition();
+
+        if (error) throw new Error(`Bład podczas pobierania lokalizacji urządzenia.`)
+
+        const {
+          city_name, windSpeed, temperature, airQualityIndex,
+          rain, snow, clouds, currentWeatherError,
+        }: {
+          city_name: string, windSpeed: number, temperature: number, airQualityIndex: number,
+          rain: number, snow: number, clouds: number, currentWeatherError: boolean,
+        } = await getCurrentWeather(lat, lon);
+
+        if (currentWeatherError) throw new Error(`Bład podczas pobierania aktualnej prognozy pogody.`)
+
+        const {
+          tomorrowWindSpeed, tomorrowTemperature, tomorrowRain,
+          tomorrowSnow, tomorrowClouds, tomorrowWeatherError,
+        }: {
+          tomorrowWindSpeed: number, tomorrowTemperature: number, tomorrowRain: number,
+          tomorrowSnow: number, tomorrowClouds: number, tomorrowWeatherError: any,
+        } = await getTomorrowWeather(lat, lon);
+
+        if (tomorrowWeatherError) throw new Error(`Błąd podczas pobierania jutrzejszej prognozy pogody.`)
+
+        setCurrentWeather({
+          city_name,
+          windSpeed,
+          temperature,
+          airQualityIndex,
+          rain,
+          snow,
+          clouds,
+        })
+        setTomorrowWeather({
+          tomorrowWindSpeed,
+          tomorrowTemperature,
+          tomorrowRain,
+          tomorrowSnow,
+          tomorrowClouds,
+        })
+        setDisplayLoader(false)
+
+      } catch (err) {
+        setInfoText(`${err}`);
+        setDisplayInfo(true);
+      }
+
+    }
+
+    getData();
+  }, [])
 
   return (
     <ThemeProvider theme={GlobalTheme}>
@@ -56,7 +120,6 @@ const App = () => {
         <Loader displayLoader={displayLoader} darkMode={darkMode} />
         <Info displayInfo={displayInfo} infoText={infoText} />
         <ModeSwitch darkMode={darkMode} setDarkMode={setDarkMode} />
-        <Asfgasf onClick={() => setDisplayLoader((prev: boolean) => !prev)}></Asfgasf>
       </Container>
     </ThemeProvider>
   )

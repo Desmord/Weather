@@ -6,6 +6,8 @@ const Container = styled.div<{ isDisplay: boolean, isShown: boolean }>`
   position:relative;
   grid-column:2/4;
   grid-row:2/4;
+  display:none;
+  opacity: 0;
   transition:all 0.5s ease-in;
 
   ${({ isShown }) => isShown ? `

@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 
 const useShowHide = (isComponentDisplay: boolean) => {
-    const [isDisplay, setIsDisplay] = useState(true);
-    const [isShown, setIsShown] = useState(true);
+    const [isDisplay, setIsDisplay] = useState(false);
+    const [isShown, setIsShown] = useState(false);
     const [animationTime] = useState(500);
 
     const hide = useCallback(() => {
