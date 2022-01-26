@@ -11,13 +11,14 @@ import {
 import Loader from "./Components/Loader/Loader";
 import ModeSwitch from "./Components/ModeSwitch/ModeSwitch";
 import Info from "./Components/Info/Info";
+import CurrentWeather from "./Components/CurrentWeather/CurrentWeather";
 
 const Container = styled.div<{ darkMode: boolean }>`
   width: 100vw;
   height: 100vh;
   display:grid;
   grid-template-columns: 1fr 250px 250px 1fr;
-  grid-template-rows: 1fr 100px 300px 1fr;
+  grid-template-rows: 1fr 50px 350px 1fr;
 
   ${({ theme, darkMode }) => darkMode ?
     `
@@ -31,15 +32,10 @@ const Container = styled.div<{ darkMode: boolean }>`
 
   @media all and (max-width: 540px){
     grid-template-columns: 1fr 200px 200px 1fr;
-    grid-template-rows: 1fr 50px 300px 1fr;
+    grid-template-rows: 1fr 40px 310px 1fr;
   }
 
 `
-
-// adding weatyher utitlities
-// current weather
-// tommorow weather
-// initial loading current and tomorow weather
 
 const App = () => {
 
@@ -48,6 +44,7 @@ const App = () => {
   const [displayLoader, setDisplayLoader] = useState(true);
   const [displayInfo, setDisplayInfo] = useState(false);
   const [infoText, setInfoText] = useState(`Bład podczas połączenia spróbuj ponownie.`);
+  const [displayWeather, setDisplayWeather] = useState(false);
   const [currentWeather, setCurrentWeather] = useState({
     city_name: ``, windSpeed: 0, temperature: 0,
     airQualityIndex: 0, rain: 0, snow: 0, clouds: 0,
@@ -76,15 +73,15 @@ const App = () => {
 
         if (currentWeatherError) throw new Error(`Bład podczas pobierania aktualnej prognozy pogody.`)
 
-        const {
-          tomorrowWindSpeed, tomorrowTemperature, tomorrowRain,
-          tomorrowSnow, tomorrowClouds, tomorrowWeatherError,
-        }: {
-          tomorrowWindSpeed: number, tomorrowTemperature: number, tomorrowRain: number,
-          tomorrowSnow: number, tomorrowClouds: number, tomorrowWeatherError: any,
-        } = await getTomorrowWeather(lat, lon);
+        // const {
+        //   tomorrowWindSpeed, tomorrowTemperature, tomorrowRain,
+        //   tomorrowSnow, tomorrowClouds, tomorrowWeatherError,
+        // }: {
+        //   tomorrowWindSpeed: number, tomorrowTemperature: number, tomorrowRain: number,
+        //   tomorrowSnow: number, tomorrowClouds: number, tomorrowWeatherError: any,
+        // } = await getTomorrowWeather(lat, lon);
 
-        if (tomorrowWeatherError) throw new Error(`Błąd podczas pobierania jutrzejszej prognozy pogody.`)
+        // if (tomorrowWeatherError) throw new Error(`Błąd podczas pobierania jutrzejszej prognozy pogody.`)
 
         setCurrentWeather({
           city_name,
@@ -95,14 +92,15 @@ const App = () => {
           snow,
           clouds,
         })
-        setTomorrowWeather({
-          tomorrowWindSpeed,
-          tomorrowTemperature,
-          tomorrowRain,
-          tomorrowSnow,
-          tomorrowClouds,
-        })
+        // setTomorrowWeather({
+        //   tomorrowWindSpeed,
+        //   tomorrowTemperature,
+        //   tomorrowRain,
+        //   tomorrowSnow,
+        //   tomorrowClouds,
+        // })
         setDisplayLoader(false)
+        setDisplayWeather(true);
 
       } catch (err) {
         setInfoText(`${err}`);
@@ -120,6 +118,10 @@ const App = () => {
         <Loader displayLoader={displayLoader} darkMode={darkMode} />
         <Info displayInfo={displayInfo} infoText={infoText} />
         <ModeSwitch darkMode={darkMode} setDarkMode={setDarkMode} />
+        <CurrentWeather
+          darkMode={darkMode}
+          currentWeather={currentWeather}
+          displayWeather={displayWeather} />
       </Container>
     </ThemeProvider>
   )
