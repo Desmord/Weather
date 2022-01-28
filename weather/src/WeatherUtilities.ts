@@ -13,7 +13,7 @@ export const getPosition = async () => {
         }
 
     } catch (err) {
-        console.log(err);
+
         return {
             lon: 0,
             lat: 0,
