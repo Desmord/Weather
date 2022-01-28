@@ -9,25 +9,16 @@ import { ReactComponent as CeliIconLight } from "../../icons/CLight.svg";
 
 const Container = styled.div<{ isDisplay: boolean, isShown: boolean, darkMode: boolean }>`
     position:relative;
-    grid-column:2/3;
+    grid-column:3/4;
     grid-row:3/4;
     display:none;
     opacity: 0;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 700;
     transition:opacity 0.5s ease-in;
 
-    ${({ darkMode }) => darkMode ?
-        `
-        border-right: 1px solid rgba(255,255,255,0.1);
-        ` : `
-        border-right: 1px solid rgba(0,0,0,0.15);
-        `}
-    // border-right: 1px solid rgba(255,255,255,0.1);
-    // background-color: rgba(255,255,255,0.1);
-
     ${({ isShown }) => isShown ? `
-        opacity: 1;
+        opacity: 0.8;
     ` : `
         opacity: 0;
     `}
@@ -43,15 +34,15 @@ const Container = styled.div<{ isDisplay: boolean, isShown: boolean, darkMode: b
 `
 
 const Temp = styled.div`
-    font-size: 3rem;
+    font-size: 2rem;
     display:flex;
-    padding-bottom: 20px;
+    /* padding-bottom: 10px; */
 `
 
 const CeliWrapper = styled.div`
-    margin-top: -5px;
-    width: 50px;
-    height: 50px;
+    margin-top:-2px;
+    width: 40px;
+    height: 40px;
 `
 
 const SubProperties = styled.div`
@@ -62,17 +53,17 @@ const SubProperties = styled.div`
 
 const DateText = styled.div`
     margin-top:15px;
-    font-size: 1rem;
+    font-size: 0.9rem;
 `
 
-const CurrentWeather = ({
+const TomorrowWeather = ({
     darkMode,
     displayWeather,
-    currentWeather
+    tomorrowWeather
 }: {
     darkMode: boolean,
     displayWeather: boolean,
-    currentWeather: any
+    tomorrowWeather: any
 }) => {
 
     const { isDisplay, isShown, } = useShowHide(displayWeather)
@@ -81,22 +72,21 @@ const CurrentWeather = ({
         <Container isDisplay={isDisplay} isShown={isShown} darkMode={darkMode}>
             <Icon
                 darkMode={darkMode}
-                snow={currentWeather.snow}
-                rain={currentWeather.rain}
-                clouds={currentWeather.clouds}
-                isTomorrow={false}
+                snow={tomorrowWeather.tomorrowSnow}
+                rain={tomorrowWeather.tomorowRain}
+                clouds={tomorrowWeather.tomorrowClouds}
+                isTomorrow={true}
             />
             <Temp>
-                {currentWeather.temperature}
+                {tomorrowWeather.tomorrowTemperature}
                 <CeliWrapper>
                     {darkMode ? <CeliIconDark /> : <CeliIconLight />}
                 </CeliWrapper>
             </Temp>
-            <SubProperties>Wiatr: &nbsp;{currentWeather.windSpeed} ms</SubProperties>
-            <SubProperties> {currentWeather.snow > 0 ? `Śnieg:  ${currentWeather.snow} mm/hr` : ``}</SubProperties>
-            <SubProperties>Opady:&nbsp; {currentWeather.rain} %</SubProperties>
-            <SubProperties>Zachmurzenie: &nbsp; {currentWeather.clouds} %</SubProperties>
-            <SubProperties>Jakość powietrza: &nbsp; {currentWeather.airQualityIndex} / 500</SubProperties>
+            <SubProperties>Wiatr: &nbsp;{tomorrowWeather.tomorrowWindSpeed} ms</SubProperties>
+            <SubProperties> {tomorrowWeather.tomorrowSnow > 0 ? `Śnieg:  ${tomorrowWeather.tomorrowSnow} mm/hr` : ``}</SubProperties>
+            <SubProperties>Opady:&nbsp; {tomorrowWeather.tomorrowRain} %</SubProperties>
+            <SubProperties>Zachmurzenie: &nbsp; {tomorrowWeather.tomorrowClouds} %</SubProperties>
             <DateText>{
                 `${String(new Date().getDate()).length > 1 ? new Date().getDate() : `0${new Date().getDate()}`}
                 -${String(new Date().getMonth() + 1).length > 1 ? new Date().getMonth() + 1 : `0${new Date().getMonth() + 1}`}
@@ -107,4 +97,4 @@ const CurrentWeather = ({
     )
 }
 
-export default CurrentWeather
+export default TomorrowWeather

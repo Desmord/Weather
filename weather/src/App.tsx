@@ -13,6 +13,7 @@ import ModeSwitch from "./Components/ModeSwitch/ModeSwitch";
 import Info from "./Components/Info/Info";
 import CurrentWeather from "./Components/CurrentWeather/CurrentWeather";
 import CityName from './Components/CityName/CityName'
+import TomorrowWeather from "./Components/TomorrowWeather/TomorrowWeather";
 
 const Container = styled.div<{ darkMode: boolean }>`
   width: 100vw;
@@ -38,7 +39,8 @@ const Container = styled.div<{ darkMode: boolean }>`
 
 `
 
-// crete CurrentWeather component
+// blad w opadach za duze liczba  - zrobic tylko na .20
+// zmienic na daty dnia na dole obok siebie
 
 const App = () => {
 
@@ -47,7 +49,7 @@ const App = () => {
   const [displayLoader, setDisplayLoader] = useState(true);
   const [displayInfo, setDisplayInfo] = useState(false);
   const [infoText, setInfoText] = useState(`Bład podczas połączenia spróbuj ponownie.`);
-  const [displayWeather, setDisplayWeather] = useState(true);
+  const [displayWeather, setDisplayWeather] = useState(false);
   const [currentWeather, setCurrentWeather] = useState({
     city_name: ``, windSpeed: 0, temperature: 0,
     airQualityIndex: 0, rain: 0, snow: 0, clouds: 0,
@@ -62,50 +64,51 @@ const App = () => {
     const getData = async () => {
 
       try {
-        // const { lon, lat, error }: { lon: number, lat: number, error: boolean } = await getPosition();
+        const { lon, lat, error }: { lon: number, lat: number, error: boolean } = await getPosition();
 
-        // if (error) throw new Error(`Bład podczas pobierania lokalizacji urządzenia.`)
+        if (error) throw new Error(`Bład podczas pobierania lokalizacji urządzenia.`)
 
-        // const {
-        //   city_name, windSpeed, temperature, airQualityIndex,
-        //   rain, snow, clouds, currentWeatherError,
-        // }: {
-        //   city_name: string, windSpeed: number, temperature: number, airQualityIndex: number,
-        //   rain: number, snow: number, clouds: number, currentWeatherError: boolean,
-        // } = await getCurrentWeather(lat, lon);
+        const {
+          city_name, windSpeed, temperature, airQualityIndex,
+          rain, snow, clouds, currentWeatherError,
+        }: {
+          city_name: string, windSpeed: number, temperature: number, airQualityIndex: number,
+          rain: number, snow: number, clouds: number, currentWeatherError: boolean,
+        } = await getCurrentWeather(lat, lon);
 
-        // if (currentWeatherError) throw new Error(`Bład podczas pobierania aktualnej prognozy pogody.`)
+        if (currentWeatherError) throw new Error(`Bład podczas pobierania aktualnej prognozy pogody.`)
 
-        // const {
-        //   tomorrowWindSpeed, tomorrowTemperature, tomorrowRain,
-        //   tomorrowSnow, tomorrowClouds, tomorrowWeatherError,
-        // }: {
-        //   tomorrowWindSpeed: number, tomorrowTemperature: number, tomorrowRain: number,
-        //   tomorrowSnow: number, tomorrowClouds: number, tomorrowWeatherError: any,
-        // } = await getTomorrowWeather(lat, lon);
+        const {
+          tomorrowWindSpeed, tomorrowTemperature, tomorrowRain,
+          tomorrowSnow, tomorrowClouds, tomorrowWeatherError,
+        }: {
+          tomorrowWindSpeed: number, tomorrowTemperature: number, tomorrowRain: number,
+          tomorrowSnow: number, tomorrowClouds: number, tomorrowWeatherError: any,
+        } = await getTomorrowWeather(lat, lon);
 
-        // if (tomorrowWeatherError) throw new Error(`Błąd podczas pobierania jutrzejszej prognozy pogody.`)
+        if (tomorrowWeatherError) throw new Error(`Błąd podczas pobierania jutrzejszej prognozy pogody.`)
 
-        // setCurrentWeather({
-        //   city_name,
-        //   windSpeed,
-        //   temperature,
-        //   airQualityIndex,
-        //   rain,
-        //   snow,
-        //   clouds,
-        // })
-        // setTomorrowWeather({
-        //   tomorrowWindSpeed,
-        //   tomorrowTemperature,
-        //   tomorrowRain,
-        //   tomorrowSnow,
-        //   tomorrowClouds,
-        // })
+        setCurrentWeather({
+          city_name,
+          windSpeed: parseFloat(windSpeed.toFixed(2)),
+          temperature: parseFloat(temperature.toFixed(2)),
+          airQualityIndex: parseFloat(airQualityIndex.toFixed(2)),
+          rain: parseFloat(rain.toFixed(2)),
+          snow: parseFloat(snow.toFixed(2)),
+          clouds: parseFloat(clouds.toFixed(2)),
+        })
+        setTomorrowWeather({
+          tomorrowWindSpeed: parseFloat(tomorrowWindSpeed.toFixed(2)),
+          tomorrowTemperature: parseFloat(tomorrowTemperature.toFixed(2)),
+          tomorrowRain: parseFloat(tomorrowRain.toFixed(2)),
+          tomorrowSnow: parseFloat(tomorrowSnow.toFixed(2)),
+          tomorrowClouds: parseFloat(tomorrowClouds.toFixed(2)),
+        })
         setDisplayLoader(false)
         setDisplayWeather(true);
 
       } catch (err) {
+        setDisplayLoader(false)
         setInfoText(`${err}`);
         setDisplayInfo(true);
       }
@@ -128,6 +131,10 @@ const App = () => {
         <CurrentWeather
           darkMode={darkMode}
           currentWeather={currentWeather}
+          displayWeather={displayWeather} />
+        <TomorrowWeather
+          darkMode={darkMode}
+          tomorrowWeather={tomorrowWeather}
           displayWeather={displayWeather} />
       </Container>
     </ThemeProvider>
