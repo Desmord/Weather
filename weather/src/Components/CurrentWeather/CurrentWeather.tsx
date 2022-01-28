@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import useShowHide from "../../CustomHooks/useShowHide";
 
+import Icon from "./Icon";
 
 // Icons
 import { ReactComponent as CeliIconDark } from "../../icons/CDark.svg";
@@ -63,8 +64,6 @@ const DateText = styled.div`
     font-size: 1rem;
 `
 
-// crete CurrentWeather component
-
 const CurrentWeather = ({
     darkMode,
     displayWeather,
@@ -79,6 +78,12 @@ const CurrentWeather = ({
 
     return (
         <Container isDisplay={isDisplay} isShown={isShown} darkMode={darkMode}>
+            <Icon
+                darkMode={darkMode}
+                snow={currentWeather.snow}
+                rain={currentWeather.rain}
+                clouds={currentWeather.clouds}
+            />
             <Temp>
                 {currentWeather.temperature}
                 <CeliWrapper>
