@@ -60,11 +60,6 @@ const SubProperties = styled.div`
     text-align: left;
 `
 
-const DateText = styled.div`
-    margin-top:15px;
-    font-size: 1rem;
-`
-
 const CurrentWeather = ({
     darkMode,
     displayWeather,
@@ -97,11 +92,7 @@ const CurrentWeather = ({
             <SubProperties>Opady:&nbsp; {currentWeather.rain} %</SubProperties>
             <SubProperties>Zachmurzenie: &nbsp; {currentWeather.clouds} %</SubProperties>
             <SubProperties>Jakość powietrza: &nbsp; {currentWeather.airQualityIndex} / 500</SubProperties>
-            <DateText>{
-                `${String(new Date().getDate()).length > 1 ? new Date().getDate() : `0${new Date().getDate()}`}
-                -${String(new Date().getMonth() + 1).length > 1 ? new Date().getMonth() + 1 : `0${new Date().getMonth() + 1}`}
-                -${new Date().getFullYear()}`
-            }</DateText>
+
         </Container>
 
     )

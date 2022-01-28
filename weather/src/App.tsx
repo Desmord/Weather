@@ -14,13 +14,14 @@ import Info from "./Components/Info/Info";
 import CurrentWeather from "./Components/CurrentWeather/CurrentWeather";
 import CityName from './Components/CityName/CityName'
 import TomorrowWeather from "./Components/TomorrowWeather/TomorrowWeather";
+import Dates from "./Components/Dates/Dates";
 
 const Container = styled.div<{ darkMode: boolean }>`
   width: 100vw;
   height: 100vh;
   display:grid;
   grid-template-columns: 1fr 250px 250px 1fr;
-  grid-template-rows: 1fr 50px 350px 1fr;
+  grid-template-rows: 1fr 50px 320px 30px 1fr;
 
   ${({ theme, darkMode }) => darkMode ?
     `
@@ -34,13 +35,10 @@ const Container = styled.div<{ darkMode: boolean }>`
 
   @media all and (max-width: 540px){
     grid-template-columns: 1fr 200px 200px 1fr;
-    grid-template-rows: 1fr 40px 310px 1fr;
+    grid-template-rows: 1fr 40px 300px 30px 1fr;
   }
 
 `
-
-// blad w opadach za duze liczba  - zrobic tylko na .20
-// zmienic na daty dnia na dole obok siebie
 
 const App = () => {
 
@@ -136,6 +134,7 @@ const App = () => {
           darkMode={darkMode}
           tomorrowWeather={tomorrowWeather}
           displayWeather={displayWeather} />
+        <Dates displayWeather={displayWeather} />
       </Container>
     </ThemeProvider>
   )
