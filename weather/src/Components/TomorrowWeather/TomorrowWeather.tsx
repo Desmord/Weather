@@ -36,7 +36,6 @@ const Container = styled.div<{ isDisplay: boolean, isShown: boolean, darkMode: b
 const Temp = styled.div`
     font-size: 2rem;
     display:flex;
-    /* padding-bottom: 10px; */
 `
 
 const CeliWrapper = styled.div`
@@ -49,11 +48,6 @@ const SubProperties = styled.div`
     margin-top:2px;
     width: 200px;
     text-align: left;
-`
-
-const DateText = styled.div`
-    margin-top:15px;
-    font-size: 0.9rem;
 `
 
 const TomorrowWeather = ({
@@ -87,11 +81,6 @@ const TomorrowWeather = ({
             <SubProperties> {tomorrowWeather.tomorrowSnow > 0 ? `Śnieg:  ${tomorrowWeather.tomorrowSnow} mm/hr` : ``}</SubProperties>
             <SubProperties>Opady:&nbsp; {tomorrowWeather.tomorrowRain} %</SubProperties>
             <SubProperties>Zachmurzenie: &nbsp; {tomorrowWeather.tomorrowClouds} %</SubProperties>
-            <DateText>{
-                `${String(new Date().getDate()).length > 1 ? new Date().getDate() : `0${new Date().getDate()}`}
-                -${String(new Date().getMonth() + 1).length > 1 ? new Date().getMonth() + 1 : `0${new Date().getMonth() + 1}`}
-                -${new Date().getFullYear()}`
-            }</DateText>
         </Container>
 
     )
