@@ -16,6 +16,7 @@ const Container = styled.div<{ isDisplay: boolean, isShown: boolean, darkMode: b
     font-size: 0.8rem;
     font-weight: 700;
     transition:opacity 0.5s ease-in;
+
     ${({ darkMode }) => darkMode ?
         `
         border-right: 1px solid rgba(255,255,255,0.1);

@@ -12,6 +12,7 @@ import Loader from "./Components/Loader/Loader";
 import ModeSwitch from "./Components/ModeSwitch/ModeSwitch";
 import Info from "./Components/Info/Info";
 import CurrentWeather from "./Components/CurrentWeather/CurrentWeather";
+import CityName from './Components/CityName/CityName'
 
 const Container = styled.div<{ darkMode: boolean }>`
   width: 100vw;
@@ -36,8 +37,8 @@ const Container = styled.div<{ darkMode: boolean }>`
   }
 
 `
-// crete CurrentWeather component
 
+// crete CurrentWeather component
 
 const App = () => {
 
@@ -120,6 +121,10 @@ const App = () => {
         <Loader displayLoader={displayLoader} darkMode={darkMode} />
         <Info displayInfo={displayInfo} infoText={infoText} />
         <ModeSwitch darkMode={darkMode} setDarkMode={setDarkMode} />
+        <CityName
+          cityName={currentWeather.city_name}
+          darkMode={darkMode}
+          displayWeather={displayWeather} />
         <CurrentWeather
           darkMode={darkMode}
           currentWeather={currentWeather}
